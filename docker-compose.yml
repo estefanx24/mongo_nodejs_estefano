@@ -1,27 +1,32 @@
-version: '3'
 services:
   app:
     build: .
+    container_name: node_app  # Añadido nombre del contenedor
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/scooter_rentals
+      - MONGO_URI=mongodb://mongo:27017/scooter_rentals  # Conexión a MongoDB
     depends_on:
-      - mongo
+      - mongo  # Mongo debe estar listo antes que la app
     volumes:
-      - .:/app
+      - .:/app  # Asegura que el volumen se monte correctamente
     networks:
       - app-network
+
   mongo:
     image: mongo:latest
+    container_name: mongo_db  # Añadido nombre del contenedor
     ports:
-      - "27017:27017"
+      - "27017:27017"  # Puerto de MongoDB
     volumes:
-      - mongo-data:/data/db
+      - mongo-data:/data/db  # Almacenamiento persistente de MongoDB
     networks:
       - app-network
+
+# Definición de la red y volúmenes compartidos
 networks:
   app-network:
     driver: bridge
+
 volumes:
   mongo-data:
